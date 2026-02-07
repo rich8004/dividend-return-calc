@@ -95,6 +95,25 @@ if st.sidebar.button("Calculate Total Return"):
                 col3.metric("Total Return ($)", f"${total_return_dollars:,.2f}")
                 col4.metric("Total Return (%)", f"{total_return_pct:.2f}%")
 
+                # --- CODE IMMEDIATELY ABOVE ---
+                col4.metric("Total Return (%)", f"{total_return_pct:.2f}%")
+
+                # --- START INSERTING HERE (Maintain this exact indentation) ---
+                if transaction_log:
+                    st.markdown("### 💸 Dividend Reinvestment Log (DRIP)")
+                    df_transactions = pd.DataFrame(transaction_log)
+                    
+                    # Convert to CSV for download
+                    csv_data = df_transactions.to_csv(index=False).encode('utf-8')
+
+                    st.download_button(
+                        label="📥 Download Transaction Log as CSV",
+                        data=csv_data,
+                        file_name=f"{ticker_symbol}_drip_log.csv",
+                        mime="text/csv",
+                    )
+                # --- END OF INSERTION ---
+                
                 # Input Parameters Table
                 st.markdown("---")
                 st.markdown("### 📋 Input Parameters")
@@ -112,4 +131,5 @@ if st.sidebar.button("Calculate Total Return"):
                     st.info("No dividends found for this period.")
 
         except Exception as e:
+
             st.error(f"An error occurred: {e}")
